@@ -1,0 +1,283 @@
+<Application x:Class="Wpf.MvvmLight.SelfHost.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Wpf.MvvmLight.SelfHost"
+             StartupUri="MainWindow.xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             d1p1:Ignorable="d"
+             xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <!--MahApps-->
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+
+        <!-- Material Design -->
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+        <materialDesign:CustomColorTheme BaseTheme="Light"
+                                         PrimaryColor="#3292DE"
+                                         SecondaryColor="WhiteSmoke" />
+
+        <!-- Material Design: MahApps Compatibility -->
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Fonts.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Flyout.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+
+      <!-- change default material foregroundBrush-->
+      <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush"
+                       Color="White" />
+      <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush"
+                       Color="White" />
+      <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush"
+                       Color="White" />
+      <SolidColorBrush x:Key="SencondAccentForegroundBrush"
+                       Color="White" />
+
+      <!--MahApps Brushes-->
+      <!--<SolidColorBrush x:Key="MahApps.Brushes.Highlight" Color="{DynamicResource Primary700}"/>
+      <SolidColorBrush x:Key="MahApps.Brushes.AccentBase" Color="{DynamicResource Primary600}" />
+      <SolidColorBrush x:Key="MahApps.Brushes.Accent" Color="{DynamicResource Primary500}"/>
+      <SolidColorBrush x:Key="MahApps.Brushes.Accent2" Color="{DynamicResource Primary400}"/>
+      <SolidColorBrush x:Key="MahApps.Brushes.Accent3" Color="{DynamicResource Primary300}"/>
+      <SolidColorBrush x:Key="MahApps.Brushes.Accent4" Color="{DynamicResource Primary200}"/>
+      <SolidColorBrush x:Key="MahApps.Brushes.WindowTitle" Color="{DynamicResource Primary700}"/>
+      <SolidColorBrush x:Key="MahApps.Brushes.Selected.Foreground" Color="{DynamicResource Primary500Foreground}"/>
+      <LinearGradientBrush x:Key="MahApps.Brushes.Progress" EndPoint="0.001,0.5" StartPoint="1.002,0.5">
+        <GradientStop Color="{DynamicResource Primary700}" Offset="0"/>
+        <GradientStop Color="{DynamicResource Primary300}" Offset="1"/>
+      </LinearGradientBrush>
+      <SolidColorBrush x:Key="MahApps.Brushes.CheckmarkFill" Color="{DynamicResource Primary500}"/>
+      <SolidColorBrush x:Key="MahApps.Brushes.RightArrowFill" Color="{DynamicResource Primary500}"/>
+      <SolidColorBrush x:Key="MahApps.Brushes.IdealForeground" Color="{DynamicResource Primary500Foreground}"/>
+      <SolidColorBrush x:Key="MahApps.Brushes.IdealForegroundDisabled" Color="{DynamicResource Primary500}" Opacity="0.4"/>
+      <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchBrush.Win10" Color="{DynamicResource Primary500}" />
+      <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchMouseOverBrush.Win10" Color="{DynamicResource Primary400}" />
+      <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.ThumbIndicatorCheckedBrush.Win10" Color="{DynamicResource Primary500Foreground}" />-->
+
+      <!--Range style-->
+      <Style x:Key="RangeListBoxItemStyle"
+             TargetType="ListBoxItem">
+        <Setter Property="MinHeight"
+                Value="40" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+              <Grid>
+                <Border x:Name="borderHeader" />
+                <Border x:Name="border" />
+                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+              </Grid>
+
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsSelected"
+                         Value="True">
+                  <Setter TargetName="borderHeader"
+                          Property="BorderThickness"
+                          Value="4,0,0,0" />
+                  <Setter TargetName="borderHeader"
+                          Property="BorderBrush"
+                          Value="{DynamicResource PrimaryHueLightBrush}" />
+                  <Setter TargetName="border"
+                          Property="Background"
+                          Value="{DynamicResource PrimaryHueLightBrush}" />
+                  <Setter TargetName="border"
+                          Property="Opacity"
+                          Value="0.2" />
+                </Trigger>
+
+                <Trigger Property="IsMouseOver"
+                         Value="True">
+                  <Setter TargetName="border"
+                          Property="Background"
+                          Value="{DynamicResource PrimaryHueLightBrush}" />
+                  <Setter TargetName="border"
+                          Property="Opacity"
+                          Value="0.2" />
+                  <Setter Property="Cursor"
+                          Value="Hand" />
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <Style x:Key="RangeScrollViewerStyle"
+             TargetType="{x:Type ScrollViewer}">
+        <Setter Property="BorderBrush"
+                Value="Blue" />
+        <Setter Property="BorderThickness"
+                Value="4" />
+        <Setter Property="HorizontalScrollBarVisibility"
+                Value="Auto" />
+
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type ScrollViewer}">
+              <Border BorderBrush="{TemplateBinding BorderBrush}"
+                      BorderThickness="{TemplateBinding BorderThickness}"
+                      SnapsToDevicePixels="True">
+                <Grid Background="{TemplateBinding Background}">
+                  <ScrollContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" />
+                  <ScrollBar x:Name="PART_VerticalScrollBar"
+                             Opacity="0"
+                             HorizontalAlignment="Right"
+                             Orientation="Vertical"
+                             Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                             Style="{StaticResource MyScrollBarStyle}"
+                             Maximum="{TemplateBinding ScrollableHeight}"
+                             ViewportSize="{TemplateBinding ViewportHeight}"
+                             Value="{TemplateBinding VerticalOffset}" />
+                  <ScrollBar x:Name="PART_HorizontalScrollBar"
+                             Opacity="0"
+                             VerticalAlignment="Bottom"
+                             Orientation="Horizontal"
+                             Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                             Style="{StaticResource MyScrollBarStyle}"
+                             Maximum="{TemplateBinding ScrollableWidth}"
+                             ViewportSize="{TemplateBinding ViewportWidth}"
+                             Value="{TemplateBinding HorizontalOffset}" />
+                </Grid>
+              </Border>
+
+              <ControlTemplate.Triggers>
+                <EventTrigger RoutedEvent="ScrollChanged">
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation Storyboard.TargetName="PART_VerticalScrollBar"
+                                       Storyboard.TargetProperty="Opacity"
+                                       To="1"
+                                       Duration="0:0:1" />
+
+                      <DoubleAnimation Storyboard.TargetName="PART_HorizontalScrollBar"
+                                       Storyboard.TargetProperty="Opacity"
+                                       To="1"
+                                       Duration="0:0:1" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseEnter"
+                              SourceName="PART_VerticalScrollBar">
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation Storyboard.TargetName="PART_VerticalScrollBar"
+                                       Storyboard.TargetProperty="Opacity"
+                                       To="1"
+                                       Duration="0:0:1" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave"
+                              SourceName="PART_VerticalScrollBar">
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation Storyboard.TargetName="PART_VerticalScrollBar"
+                                       Storyboard.TargetProperty="Opacity"
+                                       To="0"
+                                       Duration="0:0:1" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseEnter">
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation Storyboard.TargetName="PART_VerticalScrollBar"
+                                       Storyboard.TargetProperty="Opacity"
+                                       To="1"
+                                       Duration="0:0:1"
+                                       BeginTime="0" />
+
+                    </Storyboard>
+                  </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation Storyboard.TargetName="PART_VerticalScrollBar"
+                                       Storyboard.TargetProperty="Opacity"
+                                       To="0"
+                                       Duration="0:0:1" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseEnter"
+                              SourceName="PART_HorizontalScrollBar">
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation Storyboard.TargetName="PART_HorizontalScrollBar"
+                                       Storyboard.TargetProperty="Opacity"
+                                       To="1"
+                                       Duration="0:0:1" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </EventTrigger>
+
+                <EventTrigger RoutedEvent="MouseLeave"
+                              SourceName="PART_HorizontalScrollBar">
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation Storyboard.TargetName="PART_HorizontalScrollBar"
+                                       Storyboard.TargetProperty="Opacity"
+                                       To="0"
+                                       Duration="0:0:1" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseEnter">
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation Storyboard.TargetName="PART_HorizontalScrollBar"
+                                       Storyboard.TargetProperty="Opacity"
+                                       To="1"
+                                       Duration="0:0:1"
+                                       BeginTime="0" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </EventTrigger>
+
+                <EventTrigger RoutedEvent="MouseLeave">
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation Storyboard.TargetName="PART_HorizontalScrollBar"
+                                       Storyboard.TargetProperty="Opacity"
+                                       To="0"
+                                       Duration="0:0:1" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </EventTrigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <Style x:Key="RangeVerticalSeparatorStyle"
+             TargetType="Separator"
+             BasedOn="{StaticResource {x:Type Separator}}">
+        <Setter Property="LayoutTransform">
+          <Setter.Value>
+            <TransformGroup>
+              <TransformGroup.Children>
+                <TransformCollection>
+                  <RotateTransform Angle="90" />
+                </TransformCollection>
+              </TransformGroup.Children>
+            </TransformGroup>
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <!--mvvmlight depedency inject-->
+      <vm:ViewModelLocator x:Key="Locator"
+                           d:IsDataSource="True"
+                           xmlns:vm="clr-namespace:Wpf.MvvmLight.SelfHost.ViewModel" />
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>

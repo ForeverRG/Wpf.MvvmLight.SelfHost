@@ -1,0 +1,415 @@
+﻿<UserControl x:Class="Wpf.MvvmLight.SelfHost.View.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Wpf.MvvmLight.SelfHost.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             DataContext="{Binding Source={StaticResource Locator},Path=Settings}">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <!--顶部操作区-->
+    <DockPanel Grid.Row="0"
+               LastChildFill="False"
+               Margin="10">
+      <StackPanel Orientation="Horizontal"
+                  DockPanel.Dock="Right">
+        <Button Command="{Binding SaveAllSettingsCommand}"
+                Content="保存" />
+      </StackPanel>
+    </DockPanel>
+
+    <!--分割线-->
+    <Border BorderThickness="0,0,0,0.3"
+            BorderBrush="Gray"
+            Margin="10 0" />
+    <!--主体内容-->
+
+    <Grid VerticalAlignment="Stretch"
+          Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="400" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+
+      <ItemsControl>
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <UniformGrid Rows="2" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+
+        <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+          <materialDesign:TransitioningContent.OpeningEffects>
+            <materialDesign:TransitionEffect Kind="ExpandIn" />
+          </materialDesign:TransitioningContent.OpeningEffects>
+          <!--网络配置-->
+          <GroupBox Header="网络"
+                    Style="{DynamicResource MaterialDesignCardGroupBox}"
+                    materialDesign:ColorZoneAssist.Mode="SecondaryMid"
+                    Margin="10">
+            <GroupBox.HeaderTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Horizontal">
+                  <materialDesign:PackIcon Kind="IpNetworkOutline"
+                                           Height="15"
+                                           Width="15"
+                                           VerticalAlignment="Center" />
+                  <TextBlock Margin="8,0,0,0"
+                             FontSize="12"
+                             VerticalAlignment="Center"
+                             Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                             Text="{Binding}" />
+                </StackPanel>
+              </DataTemplate>
+            </GroupBox.HeaderTemplate>
+            <ScrollViewer>
+              <StackPanel>
+                <!--总控配置-->
+                <WrapPanel>
+                  <TextBlock Style="{StaticResource MaterialDesignTextBlock}"
+                             Text="总控:"
+                             VerticalAlignment="Bottom"
+                             Margin="5,0,22,0" />
+                  <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           Text="{Binding Settings.ControlCenter.Ip}"
+                           VerticalAlignment="Center">
+                    <materialDesign:HintAssist.Hint>
+                      <StackPanel Orientation="Horizontal"
+                                  Margin="-2 0 0 0">
+                        <TextBlock Text="地址"
+                                   MinWidth="150" />
+                      </StackPanel>
+                    </materialDesign:HintAssist.Hint>
+                  </TextBox>
+                  <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           Text="{Binding Settings.ControlCenter.Port}"
+                           VerticalAlignment="Center"
+                           Margin="10,0">
+                    <materialDesign:HintAssist.Hint>
+                      <StackPanel Orientation="Horizontal"
+                                  Margin="-2 0 0 0">
+                        <TextBlock Text="端口"
+                                   MinWidth="100" />
+                      </StackPanel>
+                    </materialDesign:HintAssist.Hint>
+                  </TextBox>
+                </WrapPanel>
+                <!--plc配置-->
+                <WrapPanel>
+                  <TextBlock Style="{StaticResource MaterialDesignTextBlock}"
+                             Text="PLC:"
+                             VerticalAlignment="Bottom"
+                             Margin="5,0,22,0" />
+                  <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           Text="{Binding Settings.Plc.Ip}"
+                           VerticalAlignment="Center">
+                    <materialDesign:HintAssist.Hint>
+                      <StackPanel Orientation="Horizontal"
+                                  Margin="-2 0 0 0">
+                        <TextBlock Text="地址"
+                                   MinWidth="150" />
+                      </StackPanel>
+                    </materialDesign:HintAssist.Hint>
+                  </TextBox>
+                  <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           Text="{Binding Settings.Plc.Port}"
+                           VerticalAlignment="Center"
+                           Margin="10,0">
+                    <materialDesign:HintAssist.Hint>
+                      <StackPanel Orientation="Horizontal"
+                                  Margin="-2 0 0 0">
+                        <TextBlock Text="端口"
+                                   MinWidth="100" />
+                      </StackPanel>
+                    </materialDesign:HintAssist.Hint>
+                  </TextBox>
+                </WrapPanel>
+                <!--视觉配置-->
+                <WrapPanel>
+                  <TextBlock Style="{StaticResource MaterialDesignTextBlock}"
+                             Text="视觉:"
+                             VerticalAlignment="Bottom"
+                             Margin="5,0,22,0" />
+                  <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           Text="{Binding Settings.Vision.Ip}"
+                           VerticalAlignment="Center">
+                    <materialDesign:HintAssist.Hint>
+                      <StackPanel Orientation="Horizontal"
+                                  Margin="-2 0 0 0">
+                        <TextBlock Text="地址"
+                                   MinWidth="150" />
+                      </StackPanel>
+                    </materialDesign:HintAssist.Hint>
+                  </TextBox>
+                  <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           Text="{Binding Settings.Vision.Port}"
+                           VerticalAlignment="Center"
+                           Margin="10,0">
+                    <materialDesign:HintAssist.Hint>
+                      <StackPanel Orientation="Horizontal"
+                                  Margin="-2 0 0 0">
+                        <TextBlock Text="端口"
+                                   MinWidth="100" />
+                      </StackPanel>
+                    </materialDesign:HintAssist.Hint>
+                  </TextBox>
+                </WrapPanel>
+                <!--机器人配置-->
+                <WrapPanel>
+                  <TextBlock Style="{StaticResource MaterialDesignTextBlock}"
+                             Text="机器人:"
+                             VerticalAlignment="Bottom"
+                             Margin="5,0,10,0" />
+                  <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           Text="{Binding Settings.Robot.Ip}"
+                           VerticalAlignment="Center">
+                    <materialDesign:HintAssist.Hint>
+                      <StackPanel Orientation="Horizontal"
+                                  Margin="-2 0 0 0">
+                        <TextBlock Text="地址"
+                                   MinWidth="150" />
+                      </StackPanel>
+                    </materialDesign:HintAssist.Hint>
+                  </TextBox>
+                  <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           Text="{Binding Settings.Robot.Port}"
+                           VerticalAlignment="Center"
+                           Margin="10,0">
+                    <materialDesign:HintAssist.Hint>
+                      <StackPanel Orientation="Horizontal"
+                                  Margin="-2 0 0 0">
+                        <TextBlock Text="端口"
+                                   MinWidth="100" />
+                      </StackPanel>
+                    </materialDesign:HintAssist.Hint>
+                  </TextBox>
+                </WrapPanel>
+              </StackPanel>
+            </ScrollViewer>
+          </GroupBox>
+        </materialDesign:TransitioningContent>
+
+        <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+          <materialDesign:TransitioningContent.OpeningEffects>
+            <materialDesign:TransitionEffect Kind="ExpandIn" />
+          </materialDesign:TransitioningContent.OpeningEffects>
+          <!--运行参数配置-->
+          <GroupBox Header="运行参数"
+                    Style="{DynamicResource MaterialDesignCardGroupBox}"
+                    materialDesign:ColorZoneAssist.Mode="SecondaryMid"
+                    Margin="10,0,10,10">
+            <GroupBox.HeaderTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Horizontal">
+                  <materialDesign:PackIcon Kind="DatabaseCogOutline"
+                                           Height="15"
+                                           Width="15"
+                                           VerticalAlignment="Center" />
+                  <TextBlock Margin="8,0,0,0"
+                             FontSize="12"
+                             VerticalAlignment="Center"
+                             Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                             Text="{Binding}" />
+                </StackPanel>
+              </DataTemplate>
+            </GroupBox.HeaderTemplate>
+            <ScrollViewer>
+              <!--运行参数设置-->
+              <WrapPanel>
+                <!--运行模式-->
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Style="{StaticResource MaterialDesignTextBlock}"
+                             Text="模   式:"
+                             VerticalAlignment="Bottom"
+                             Margin="5,0" />
+                  <ComboBox materialDesign:HintAssist.HintOpacity=".26"
+                            ItemsSource="{Binding RunMode}"
+                            SelectedItem="{Binding Settings.ModeConfig.Value}"
+                            Width="100"
+                            Margin="8,0"
+                            VerticalAlignment="Bottom" />
+                </StackPanel>
+                <!--条光使能-->
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Style="{StaticResource MaterialDesignTextBlock}"
+                             Text="条   光:"
+                             VerticalAlignment="Bottom"
+                             Margin="5,0" />
+                  <ComboBox ItemsSource="{Binding BarLightEnable}"
+                            SelectedItem="{Binding Settings.BarLightEnableConfig.Value}"
+                            Width="100"
+                            VerticalAlignment="Bottom" />
+                </StackPanel>
+                <!--机器人号-->
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Style="{StaticResource MaterialDesignTextBlock}"
+                             Text="机器人号:"
+                             VerticalAlignment="Bottom"
+                             Margin="5,0" />
+                  <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           Text="{Binding Settings.RobotNameConfig.Value}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Stretch"
+                           Width="100" />
+                </StackPanel>
+                <!--产线号-->
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Style="{StaticResource MaterialDesignTextBlock}"
+                             Text="产线号:"
+                             VerticalAlignment="Bottom"
+                             Margin="5,0" />
+                  <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           Text="{Binding Settings.LineNameConfig.Value}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Stretch"
+                           Width="100" />
+                </StackPanel>
+                <!--操作员ID-->
+                <DockPanel HorizontalAlignment="Stretch"
+                           LastChildFill="False"
+                           Width="318">
+                  <TextBlock Style="{StaticResource MaterialDesignTextBlock}"
+                             Text="操作员ID:"
+                             VerticalAlignment="Bottom"
+                             Margin="5,0" />
+                  <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           Text="{Binding Settings.OperatorConfig.Value}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Stretch"
+                           DockPanel.Dock="Bottom" />
+                </DockPanel>
+                <!--工单号-->
+                <DockPanel HorizontalAlignment="Stretch"
+                           LastChildFill="False"
+                           Width="318">
+                  <TextBlock Style="{StaticResource MaterialDesignTextBlock}"
+                             Text="工单号:"
+                             VerticalAlignment="Bottom"
+                             Margin="5,0"
+                             DockPanel.Dock="Left" />
+                  <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           Text="{Binding Settings.MoConfig.Value}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Stretch"
+                           DockPanel.Dock="Bottom" />
+                </DockPanel>
+                <!--机型-->
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Style="{StaticResource MaterialDesignTextBlock}"
+                             Text="机   型:"
+                             VerticalAlignment="Bottom"
+                             Margin="5,0" />
+                  <ComboBox ItemsSource="{Binding Settings.ModuleTypes}"
+                            SelectedItem="{Binding Settings.ModuleTypeConfig.Value}"
+                            Width="100"
+                            VerticalAlignment="Bottom" />
+                </StackPanel>
+                <!--待测模块数-->
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Style="{StaticResource MaterialDesignTextBlock}"
+                             Text="待测模块数:"
+                             VerticalAlignment="Bottom"
+                             Margin="5,0" />
+                  <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           Text="{Binding Settings.TestModuleNumberConfig.Value}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Stretch"
+                           Width="90" />
+                </StackPanel>
+                <!--起始模块-->
+                <DockPanel HorizontalAlignment="Stretch"
+                           LastChildFill="False"
+                           Width="318">
+                  <TextBlock Style="{StaticResource MaterialDesignTextBlock}"
+                             Text="起始模块:"
+                             VerticalAlignment="Bottom"
+                             Margin="5,0" />
+                  <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           Text="{Binding Settings.RunStartIndexConfig.Value}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Stretch"
+                           DockPanel.Dock="Bottom" />
+                </DockPanel>
+              </WrapPanel>
+            </ScrollViewer>
+          </GroupBox>
+        </materialDesign:TransitioningContent>
+
+      </ItemsControl>
+
+      <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}"
+                                           Grid.Column="1">
+        <materialDesign:TransitioningContent.OpeningEffects>
+          <materialDesign:TransitionEffect Kind="ExpandIn" />
+        </materialDesign:TransitioningContent.OpeningEffects>
+
+        <!--测试台配置-->
+        <GroupBox Header="测试台"
+                  Style="{DynamicResource MaterialDesignCardGroupBox}"
+                  materialDesign:ColorZoneAssist.Mode="SecondaryMid"
+                  Margin="10">
+          <GroupBox.HeaderTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="Monitor"
+                                         Height="15"
+                                         Width="15"
+                                         VerticalAlignment="Center" />
+                <TextBlock Margin="8,0,0,0"
+                           FontSize="12"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                           Text="{Binding}" />
+              </StackPanel>
+            </DataTemplate>
+          </GroupBox.HeaderTemplate>
+
+          <DataGrid ItemsSource="{Binding Settings.TestBenches}"
+                    CanUserAddRows="False"
+                    AutoGenerateColumns="False"
+                    SelectionUnit="Cell"
+                    SelectionMode="Extended">
+            <DataGrid.Columns>
+              <DataGridTextColumn  Binding="{Binding Number}"
+                                   Header="ID"
+                                   Width="*"
+                                   IsReadOnly="True"
+                                   ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                   EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
+              <DataGridCheckBoxColumn Binding="{Binding IsUsed}"
+                                      Header="启用"
+                                      Width="*"
+                                      ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+                                      EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}" />
+              <materialDesign:DataGridComboBoxColumn Header="工序"
+                                                     Width="*"
+                                                     SelectedValueBinding="{Binding Sequence}"
+                                                     ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.WorkingProcedure}" />
+              <materialDesign:DataGridComboBoxColumn Header="工位"
+                                                     Width="2*"
+                                                     SelectedValueBinding="{Binding Name}"
+                                                     ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.Station}" />
+              <DataGridTextColumn Binding="{Binding Ip}"
+                                  Header="IP地址"
+                                  Width="2*"
+                                  ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
+              <DataGridTextColumn Binding="{Binding Port}"
+                                  Header="端口号"
+                                  Width="2*"
+                                  ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                  EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
+            </DataGrid.Columns>
+          </DataGrid>
+        </GroupBox>
+      </materialDesign:TransitioningContent>
+    </Grid>
+  </Grid>
+</UserControl>

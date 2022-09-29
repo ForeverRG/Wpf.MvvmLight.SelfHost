@@ -1,0 +1,144 @@
+<UserControl x:Class="Wpf.MvvmLight.SelfHost.View.LayoutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:views="clr-namespace:Wpf.MvvmLight.SelfHost.View"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d"
+             DataContext="{Binding Source={StaticResource Locator},Path=Layout}">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding Layout.IsLeftDrawerOpen}"
+                             OpenMode="Standard">
+    <materialDesign:DrawerHost.Style>
+      <Style TargetType="materialDesign:DrawerHost"
+             BasedOn="{StaticResource {x:Type materialDesign:DrawerHost}}">
+      </Style>
+    </materialDesign:DrawerHost.Style>
+
+    <materialDesign:DrawerHost.LeftDrawerContent>
+      <DockPanel Width="{Binding Layout.LeftDrawerWidth}"
+                 LastChildFill="False">
+        <!--顶部标题-->
+        <StackPanel Orientation="Horizontal"
+                    Background="AliceBlue"
+                    DockPanel.Dock="Top"
+                    ToolTip="Wpf MvvmLight SelfHost">
+          <!--<Button Style="{StaticResource MaterialDesignIconButton}"
+                  Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
+                  Margin="10"
+                  Width="{Binding Layout.HeaderIconSize}"
+                  Height="{Binding Layout.HeaderIconSize}">-->
+          <Image Source="/Resources/img/wms.jpg"
+                 Width="{Binding Layout.HeaderIconSize}"
+                 Height="{Binding Layout.HeaderIconSize}"
+                 Margin="10" />
+          <!--</Button>-->
+          <TextBlock Style="{StaticResource MahApps.Styles.TextBlock.HamburgerMenuHeader}"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Center"
+                     FontSize="20"
+                     Text="WMS"
+                     Margin="10" />
+        </StackPanel>
+
+        <!--菜单-->
+        <ListBox x:Name="menuBar"
+                 ItemContainerStyle="{StaticResource RangeListBoxItemStyle}"
+                 ItemsSource="{Binding Layout.MenuBars}"
+                 DockPanel.Dock="Top">
+          <i:Interaction.Triggers>
+            <i:EventTrigger EventName="SelectionChanged">
+              <i:InvokeCommandAction Command="{Binding ShowViewCommand}"
+                                     CommandParameter="{Binding ElementName=menuBar, Path=SelectedItem}" />
+            </i:EventTrigger>
+          </i:Interaction.Triggers>
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Background="Transparent"
+                          Orientation="Horizontal"
+                          ToolTip="{Binding Title}">
+                <materialDesign:PackIcon Margin="15,0"
+                                         Kind="{Binding Icon}" />
+                <TextBlock Margin="10,0"
+                           Text="{Binding Title}" />
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!--底部操作栏-->
+        <Button  Command="{Binding DrawerBackOrForwardCommand}"
+                 ToolTip="{Binding Layout.BottomMenuBar.Title}"
+                 Style="{StaticResource MaterialDesignFlatButton}"
+                 DockPanel.Dock="Bottom">
+          <materialDesign:PackIcon Kind="{Binding Layout.BottomMenuBar.Icon}" />
+        </Button>
+      </DockPanel>
+    </materialDesign:DrawerHost.LeftDrawerContent>
+
+    <DockPanel LastChildFill="True">
+      <!--layout-->
+      <materialDesign:ColorZone Padding="10"
+                                materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                DockPanel.Dock="Top">
+        <DockPanel>
+          <!--<materialDesign:PopupBox DockPanel.Dock="Right"
+                                   PlacementMode="BottomAndAlignRightEdges">
+            <Menu IsMainMenu="True">
+              <MenuItem Header="模拟运行"
+                        IsCheckable="True"
+                        IsChecked="True" />
+            </Menu>
+          </materialDesign:PopupBox>-->
+          <DockPanel LastChildFill="False">
+            <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                          IsChecked="{Binding Layout.IsLeftDrawerOpen}"
+                          AutomationProperties.Name="HamburgerToggleButton"
+                          DockPanel.Dock="Left">
+              <materialDesign:PackIcon Kind="Pin"
+                                       RenderTransformOrigin=".5,.5">
+                <materialDesign:PackIcon.RenderTransform>
+                  <RotateTransform Angle="45" />
+                </materialDesign:PackIcon.RenderTransform>
+              </materialDesign:PackIcon>
+              <materialDesign:ToggleButtonAssist.OnContent>
+                <materialDesign:PackIcon Kind="Pin" />
+              </materialDesign:ToggleButtonAssist.OnContent>
+            </ToggleButton>
+
+            <Separator Style="{StaticResource RangeVerticalSeparatorStyle}"
+                       Margin="10"
+                       Width="20"
+                       DockPanel.Dock="Left" />
+
+            <TextBlock FontSize="16"
+                       VerticalAlignment="Center"
+                       AutomationProperties.Name="UR"
+                       Text="{Binding Layout.ActiveMenuBar.Title}"
+                       DockPanel.Dock="Left" />
+
+            <Button Command="{Binding ConfigureVisionCommand }"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    Content="视觉配置"
+                    DockPanel.Dock="Right"
+                    Cursor="Hand" />
+          </DockPanel>
+
+        </DockPanel>
+      </materialDesign:ColorZone>
+      <!--content view-->
+      <ContentControl Content="{Binding Layout.ContentObj }" />
+    </DockPanel>
+  </materialDesign:DrawerHost>
+</UserControl>

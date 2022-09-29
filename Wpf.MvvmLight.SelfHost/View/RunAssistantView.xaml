@@ -1,0 +1,261 @@
+﻿<UserControl x:Class="Wpf.MvvmLight.SelfHost.View.RunAssistantView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Wpf.MvvmLight.SelfHost.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             DataContext="{Binding Source={StaticResource Locator},Path=RunAssistant}">
+  <UserControl.Resources>
+    <Style x:Key="RangeBorderSpacingStyle"
+           TargetType="Border">
+      <Setter Property="Margin"
+              Value="5" />
+    </Style>
+    <Style x:Key="RangeBorderStyle"
+           TargetType="Border">
+      <Setter Property="BorderThickness"
+              Value="1" />
+      <Setter Property="BorderBrush"
+              Value="#CBCBCB" />
+    </Style>
+  </UserControl.Resources>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="2*" />
+    </Grid.ColumnDefinitions>
+    <materialDesign:TransitioningContent  Grid.Row="0"
+                                          Grid.Column="1"
+                                          OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+      <materialDesign:TransitioningContent.OpeningEffects>
+        <materialDesign:TransitionEffect Kind="ExpandIn" />
+      </materialDesign:TransitioningContent.OpeningEffects>
+      <GroupBox Header="总控"
+                Style="{DynamicResource MaterialDesignCardGroupBox}"
+                materialDesign:ColorZoneAssist.Mode="SecondaryMid"
+                Margin="10">
+        <GroupBox.HeaderTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <materialDesign:PackIcon Kind="Goal"
+                                       Height="15"
+                                       Width="15"
+                                       VerticalAlignment="Center" />
+              <TextBlock Margin="8,0,0,0"
+                         FontSize="12"
+                         VerticalAlignment="Center"
+                         Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                         Text="{Binding}" />
+            </StackPanel>
+          </DataTemplate>
+        </GroupBox.HeaderTemplate>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
+          <UniformGrid Rows="1"
+                       Columns="3">
+            <Border Style="{StaticResource RangeBorderSpacingStyle}">
+              <Button Content="初始化"
+                      Command="{Binding InitServerCommand}"
+                      Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+            </Border>
+            <Border Style="{StaticResource RangeBorderSpacingStyle}">
+              <Button Content="停止服务"
+                      Command="{Binding StopServerCommand}"
+                      Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                      Background="Red"
+                      BorderBrush="Red" />
+            </Border>
+          </UniformGrid>
+        </ScrollViewer>
+      </GroupBox>
+    </materialDesign:TransitioningContent>
+
+    <materialDesign:TransitioningContent Grid.Row="1"
+                                         Grid.Column="1"
+                                         OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+      <materialDesign:TransitioningContent.OpeningEffects>
+        <materialDesign:TransitionEffect Kind="ExpandIn" />
+      </materialDesign:TransitioningContent.OpeningEffects>
+      <GroupBox Header="视觉"
+                Style="{DynamicResource MaterialDesignCardGroupBox}"
+                materialDesign:ColorZoneAssist.Mode="SecondaryMid"
+                Margin="10,0,10,10">
+        <GroupBox.HeaderTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <materialDesign:PackIcon Kind="Camera"
+                                       Height="15"
+                                       Width="15"
+                                       VerticalAlignment="Center" />
+              <TextBlock Margin="8,0,0,0"
+                         FontSize="12"
+                         VerticalAlignment="Center"
+                         Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                         Text="{Binding}" />
+            </StackPanel>
+          </DataTemplate>
+        </GroupBox.HeaderTemplate>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
+          <UniformGrid Rows="1"
+                       Columns="3">
+            <Border Style="{StaticResource RangeBorderSpacingStyle}">
+              <Button Content="追加单任务"
+                      Command="{Binding AddSingleTaskCommand}"
+                      Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+            </Border>
+          </UniformGrid>
+        </ScrollViewer>
+      </GroupBox>
+    </materialDesign:TransitioningContent>
+
+    <materialDesign:TransitioningContent Grid.Row="2"
+                                         Grid.Column="1"
+                                         OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+      <materialDesign:TransitioningContent.OpeningEffects>
+        <materialDesign:TransitionEffect Kind="ExpandIn" />
+      </materialDesign:TransitioningContent.OpeningEffects>
+      <GroupBox Header="机器人"
+                Style="{DynamicResource MaterialDesignCardGroupBox}"
+                materialDesign:ColorZoneAssist.Mode="SecondaryMid"
+                Margin="10,0,10,10">
+        <GroupBox.HeaderTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <materialDesign:PackIcon Kind="Robot"
+                                       Height="15"
+                                       Width="15"
+                                       VerticalAlignment="Center" />
+              <TextBlock Margin="8,0,0,0"
+                         FontSize="12"
+                         VerticalAlignment="Center"
+                         Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                         Text="{Binding}" />
+            </StackPanel>
+          </DataTemplate>
+        </GroupBox.HeaderTemplate>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="*" />
+              <RowDefinition Height="5" />
+              <RowDefinition Height="*" />
+              <RowDefinition Height="5" />
+              <RowDefinition Height="*" />
+
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition Width="10" />
+              <ColumnDefinition />
+              <ColumnDefinition Width="10" />
+              <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Border Style="{StaticResource RangeBorderSpacingStyle}">
+              <Button Content="追加多任务"
+                      Command="{Binding AddMultiTaskCommand}"
+                      Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+            </Border>
+          </Grid>
+        </ScrollViewer>
+      </GroupBox>
+    </materialDesign:TransitioningContent>
+
+    <materialDesign:TransitioningContent Grid.RowSpan="4"
+                                         OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+      <materialDesign:TransitioningContent.OpeningEffects>
+        <materialDesign:TransitionEffect Kind="ExpandIn" />
+      </materialDesign:TransitioningContent.OpeningEffects>
+
+      <GroupBox Header="调试LOG"
+                Style="{DynamicResource MaterialDesignCardGroupBox}"
+                materialDesign:ColorZoneAssist.Mode="SecondaryMid"
+                Margin="10">
+        <GroupBox.HeaderTemplate>
+          <DataTemplate>
+            <DockPanel>
+              <materialDesign:PackIcon Kind="MathLog"
+                                       Height="15"
+                                       Width="15"
+                                       VerticalAlignment="Center" />
+              <TextBlock Margin="8,0,0,0"
+                         FontSize="12"
+                         VerticalAlignment="Center"
+                         Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                         Text="{Binding}" />
+              <Button x:Name="ClearUILogBtn"
+                      Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}, Path=DataContext.ClearDebugLogCommand}"
+                      Style="{StaticResource MaterialDesignIconButton}"
+                      ToolTip="清空调试LOG"
+                      HorizontalAlignment="Right"
+                      Height="30"
+                      Width="30">
+                <materialDesign:PackIcon Height="20"
+                                         Width="20"
+                                         Kind="Autorenew" />
+              </Button>
+            </DockPanel>
+          </DataTemplate>
+        </GroupBox.HeaderTemplate>
+
+        <TextBox Margin="10"
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 IsReadOnly="True"
+                 x:Name="DebugLog"
+                 VerticalScrollBarVisibility="Auto" />
+      </GroupBox>
+    </materialDesign:TransitioningContent>
+
+    <materialDesign:TransitioningContent  Grid.Row="3"
+                                          Grid.Column="1"
+                                          OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+      <materialDesign:TransitioningContent.OpeningEffects>
+        <materialDesign:TransitionEffect Kind="ExpandIn" />
+      </materialDesign:TransitioningContent.OpeningEffects>
+      <GroupBox Header="扩展"
+                Style="{DynamicResource MaterialDesignCardGroupBox}"
+                materialDesign:ColorZoneAssist.Mode="SecondaryMid"
+                Margin="10,0,10,10">
+        <GroupBox.HeaderTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <materialDesign:PackIcon Kind="Goal"
+                                       Height="15"
+                                       Width="15"
+                                       VerticalAlignment="Center" />
+              <TextBlock Margin="8,0,0,0"
+                         FontSize="12"
+                         VerticalAlignment="Center"
+                         Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                         Text="{Binding}" />
+            </StackPanel>
+          </DataTemplate>
+        </GroupBox.HeaderTemplate>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
+          <StackPanel Orientation="Horizontal">
+            <Border Style="{StaticResource RangeBorderSpacingStyle}">
+              <CheckBox Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
+                        IsChecked="{Binding IsCycleAddTask}"
+                        Content="循环追加任务" />
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
+      </GroupBox>
+    </materialDesign:TransitioningContent>
+  </Grid>
+</UserControl>

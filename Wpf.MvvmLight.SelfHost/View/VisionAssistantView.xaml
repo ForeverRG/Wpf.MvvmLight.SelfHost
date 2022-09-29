@@ -1,0 +1,329 @@
+﻿<UserControl x:Class="Quectel.ATE.UR.UI.View.VisionAssistantView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Quectel.ATE.UR.UI.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             DataContext="{Binding Source={StaticResource Locator},Path=VisionAssistant}"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf">
+  <UserControl.Resources>
+    <Style x:Key="RangeBorderSpacingStyle"
+           TargetType="Border">
+      <Setter Property="Margin"
+              Value="5" />
+    </Style>
+    <Style x:Key="RangeBorderStyle"
+           TargetType="Border">
+      <Setter Property="BorderThickness"
+              Value="1" />
+      <Setter Property="BorderBrush"
+              Value="#CBCBCB" />
+    </Style>
+  </UserControl.Resources>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="200px" />
+      <RowDefinition Height="150px" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="700px" />
+
+    </Grid.ColumnDefinitions>
+    <materialDesign:TransitioningContent  Grid.Row="0"
+                                          Grid.Column="1"
+                                          OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+      <materialDesign:TransitioningContent.OpeningEffects>
+        <materialDesign:TransitionEffect Kind="ExpandIn" />
+      </materialDesign:TransitioningContent.OpeningEffects>
+      <!--网络配置-->
+      <GroupBox Header="总控"
+                Style="{DynamicResource MaterialDesignCardGroupBox}"
+                materialDesign:ColorZoneAssist.Mode="SecondaryMid"
+                Margin="10">
+        <GroupBox.HeaderTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <materialDesign:PackIcon Kind="Goal"
+                                       Height="15"
+                                       Width="15"
+                                       VerticalAlignment="Center" />
+              <TextBlock Margin="8,0,0,0"
+                         FontSize="12"
+                         VerticalAlignment="Center"
+                         Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                         Text="{Binding}" />
+            </StackPanel>
+          </DataTemplate>
+        </GroupBox.HeaderTemplate>
+        <UniformGrid Rows="3"
+                     Columns="3">
+          <Border Style="{StaticResource RangeBorderSpacingStyle}">
+            <Button Content="初始化"
+                    Command="{Binding InitServerCommand}"
+                    Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          </Border>
+          <Border Style="{StaticResource RangeBorderSpacingStyle}">
+            <Button Content="模拟运行"
+                    Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          </Border>
+          <Border Style="{StaticResource RangeBorderSpacingStyle}">
+            <Button Content="停止总控"
+                    BorderBrush="red"
+                    Background="red"
+                    Foreground="#FFFFFFFF"
+                    Command="{}"
+                    Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          </Border>
+          <Border Style="{StaticResource RangeBorderSpacingStyle}">
+            <Button Grid.Row="6"
+                    Content="单次取放"
+                    Command="{Binding SingleActionCommand}"
+                    Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          </Border>
+          <Border Style="{StaticResource RangeBorderSpacingStyle}">
+            <Button Grid.Row="6"
+                    Grid.Column="2"
+                    Content="单次取放(双A)"
+                    Command="{Binding DoubleSocketSingleActionCommand}"
+                    Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          </Border>
+          <Border Style="{StaticResource RangeBorderSpacingStyle}">
+            <Button Grid.Row="6"
+                    Grid.Column="4"
+                    Content="校线损"
+                    Command="{Binding AlignLineLossCommand}"
+                    Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          </Border>
+          <Border Style="{StaticResource RangeBorderSpacingStyle}">
+            <Button Grid.Row="6"
+                    Grid.Column="4"
+                    Content="校线损(双A)"
+                    Command="{Binding DoubleSocketAlignLineLossCommand}"
+                    Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          </Border>
+        </UniformGrid>
+      </GroupBox>
+    </materialDesign:TransitioningContent>
+
+    <materialDesign:TransitioningContent Grid.Row="2"
+                                         Grid.Column="1"
+                                         OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+      <materialDesign:TransitioningContent.OpeningEffects>
+        <materialDesign:TransitionEffect Kind="ExpandIn" />
+      </materialDesign:TransitioningContent.OpeningEffects>
+      <GroupBox Header="机器人"
+                Style="{DynamicResource MaterialDesignCardGroupBox}"
+                materialDesign:ColorZoneAssist.Mode="SecondaryMid"
+                Margin="10,0,10,10">
+        <GroupBox.HeaderTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <materialDesign:PackIcon Kind="Robot"
+                                       Height="15"
+                                       Width="15"
+                                       VerticalAlignment="Center" />
+              <TextBlock Margin="8,0,0,0"
+                         FontSize="12"
+                         VerticalAlignment="Center"
+                         Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                         Text="{Binding}" />
+            </StackPanel>
+          </DataTemplate>
+        </GroupBox.HeaderTemplate>
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="40" />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+
+          <TextBox Grid.ColumnSpan="5"
+                   materialDesign:HintAssist.Hint="机器人指令"
+                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                   VerticalAlignment="Center"
+                   Text="{Binding RobotCmd}" />
+          <Button  Grid.Column="6"
+                   Content="发送"
+                   Command="{Binding SendToRobotCommand}"
+                   Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          <ComboBox Grid.Row="2"
+                    materialDesign:HintAssist.Hint="夹具位置"
+                    ItemsSource="{Binding JigNumberList}"
+                    SelectedItem="{Binding JigNum}"
+                    Name="jig"
+                    VerticalAlignment="Bottom"
+                    Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+            <ComboBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <VirtualizingStackPanel />
+              </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
+          </ComboBox>
+          <Button Grid.Row="2"
+                  Grid.Column="2"
+                  Content="移动到QR"
+                  Command="{Binding RobotMoveToCommand}"
+                  CommandParameter="QR"
+                  Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          <Button Grid.Row="2"
+                  Grid.Column="4"
+                  Content="移动到SOCKET1"
+                  Command="{Binding RobotMoveToCommand}"
+                  CommandParameter="Socket1"
+                  Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          <Button Grid.Row="2"
+                  Grid.Column="6"
+                  Content="移动到SOCKET2"
+                  Command="{Binding RobotMoveToCommand}"
+                  CommandParameter="Socket2"
+                  Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          <ComboBox Grid.Row="4"
+                    materialDesign:HintAssist.Hint="入料盘穴位"
+                    Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                    ItemsSource="{Binding TrayNumberList}"
+                    SelectedItem="{Binding TrayNum}"
+                    Name="tray"
+                    VerticalAlignment="Bottom">
+            <ComboBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <VirtualizingStackPanel />
+              </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
+          </ComboBox>
+          <Button Grid.Row="4"
+                  Grid.Column="2"
+                  Content="移到固定位置"
+                  Command="{Binding RobotMoveToCommand}"
+                  CommandParameter="Tray"
+                  Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          <Button Grid.Row="4"
+                  Grid.Column="4"
+                  Content="循环移动位置"
+                  Command="{Binding RobotMoveToCommand}"
+                  CommandParameter="Cycle"
+                  Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          <Button Grid.Row="4"
+                  Grid.Column="6"
+                  Content="移动到线损治具"
+                  Command="{Binding RobotMoveToCommand}"
+                  CommandParameter="LineLoss"
+                  Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+        </Grid>
+      </GroupBox>
+    </materialDesign:TransitioningContent>
+
+    <materialDesign:TransitioningContent Grid.Row="1"
+                                         Grid.Column="1"
+                                         OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}">
+      <materialDesign:TransitioningContent.OpeningEffects>
+        <materialDesign:TransitionEffect Kind="ExpandIn" />
+      </materialDesign:TransitioningContent.OpeningEffects>
+      <!--运行参数配置-->
+      <GroupBox Header="视觉"
+                Style="{DynamicResource MaterialDesignCardGroupBox}"
+                materialDesign:ColorZoneAssist.Mode="SecondaryMid"
+                Margin="10,0,10,10">
+        <GroupBox.HeaderTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <materialDesign:PackIcon Kind="Camera"
+                                       Height="15"
+                                       Width="15"
+                                       VerticalAlignment="Center" />
+              <TextBlock Margin="8,0,0,0"
+                         FontSize="12"
+                         VerticalAlignment="Center"
+                         Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                         Text="{Binding}" />
+            </StackPanel>
+          </DataTemplate>
+        </GroupBox.HeaderTemplate>
+        <UniformGrid Rows="2"
+                     Columns="3">
+          <Border Style="{StaticResource RangeBorderSpacingStyle}">
+            <Button Content="读取夹具二维码"
+                    Command="{Binding ReadJigQrCommand}"
+                    Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          </Border>
+          <Border Style="{StaticResource RangeBorderSpacingStyle}">
+            <Button Content="右侧-SOCKET1定位"
+                    Command="{Binding PositioningRightSocket1Command}"
+                    Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          </Border>
+          <Border Style="{StaticResource RangeBorderSpacingStyle}">
+            <Button Content="右侧-SOCKET2定位"
+                    Command="{Binding PositioningRightSocket2Command}"
+                    Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          </Border>
+          <Border Style="{StaticResource RangeBorderSpacingStyle}">
+            <Button Content="左侧-SOCKET1定位"
+                    Command="{Binding PositioningLeftSocket1Command}"
+                    Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          </Border>
+          <Border Style="{StaticResource RangeBorderSpacingStyle}">
+            <Button Content="左侧-SOCKET2定位"
+                    Command="{Binding PositioningLeftSocket2Command}"
+                    Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+          </Border>
+        </UniformGrid>
+      </GroupBox>
+    </materialDesign:TransitioningContent>
+
+    <materialDesign:TransitioningContent OpeningEffectsOffset="{materialDesign:IndexedItemOffsetMultiplier 0:0:0.05}"
+                                         Grid.RowSpan="3">
+      <materialDesign:TransitioningContent.OpeningEffects>
+        <materialDesign:TransitionEffect Kind="ExpandIn" />
+      </materialDesign:TransitioningContent.OpeningEffects>
+
+      <GroupBox Header="调试日志"
+                Style="{DynamicResource MaterialDesignCardGroupBox}"
+                materialDesign:ColorZoneAssist.Mode="SecondaryMid"
+                Margin="10">
+        <GroupBox.HeaderTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <materialDesign:PackIcon Kind="MathLog"
+                                       Height="15"
+                                       Width="15"
+                                       VerticalAlignment="Center" />
+              <TextBlock Margin="8,0,0,0"
+                         FontSize="12"
+                         VerticalAlignment="Center"
+                         Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                         Text="{Binding}" />
+            </StackPanel>
+          </DataTemplate>
+        </GroupBox.HeaderTemplate>
+
+        <TextBox Margin="10"
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 IsReadOnly="True"
+                 Name="DebugTextBox"
+                 VerticalScrollBarVisibility="Visible" />
+      </GroupBox>
+    </materialDesign:TransitioningContent>
+
+  </Grid>
+</UserControl>
