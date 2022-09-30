@@ -60,6 +60,7 @@
     <Compile Include="Controllers\DbFirstController.cs" />
     <Compile Include="HttpService.cs" />
     <Compile Include="Model\HttpMessage.cs" />
+    <Compile Include="Model\PostEcho.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

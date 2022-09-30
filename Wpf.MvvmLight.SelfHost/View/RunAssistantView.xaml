@@ -115,6 +115,16 @@
                       Command="{Binding AddSingleTaskCommand}"
                       Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
             </Border>
+            <Border Style="{StaticResource RangeBorderSpacingStyle}">
+              <Button Content="Http Get Request"
+                      Command="{Binding SendGetRequestCommand}"
+                      Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+            </Border>
+            <Border Style="{StaticResource RangeBorderSpacingStyle}">
+              <Button Content="Http Post Request"
+                      Command="{Binding SendPostRequestCommand}"
+                      Style="{StaticResource MaterialDesignFlatDarkBgButton}" />
+            </Border>
           </UniformGrid>
         </ScrollViewer>
       </GroupBox>

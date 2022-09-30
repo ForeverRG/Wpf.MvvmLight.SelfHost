@@ -10,6 +10,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using RestSharp;
 
 namespace Wpf.MvvmLight.SelfHost.ViewModel
 {
@@ -22,6 +23,8 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel
     public RelayCommand StopServerCommand { get; set; }
     public RelayCommand AddSingleTaskCommand { get; set; }
     public RelayCommand AddMultiTaskCommand { get; set; }
+    public RelayCommand SendGetRequestCommand { get; set; }
+    public RelayCommand SendPostRequestCommand { get; set; }
     public RelayCommand ClearDebugLogCommand { get; set; }
 
     public RunAssistantViewModel()
@@ -32,7 +35,31 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel
       StopServerCommand = new RelayCommand(StopServer);
       AddSingleTaskCommand = new RelayCommand(AddSingleTask);
       AddMultiTaskCommand = new RelayCommand(AddMultiTask);
+      SendGetRequestCommand = new RelayCommand(SendGetRequest);
+      SendPostRequestCommand = new RelayCommand(SendPostRequest);
       ClearDebugLogCommand = new RelayCommand(ClearDebugLog);
+    }
+
+    private void SendPostRequest()
+    {
+      Task.Run(async () =>
+      {
+        var client = new RestClient("http://127.0.0.1:9000/");
+        var request = new RestRequest("api/home/echo", Method.Post).AddParameter("name","post");
+        var response = await client.PostAsync(request);
+        EventSignal.SendWriteDebugLogSignal($"获取POST请求响应：状态码：{response.StatusCode},内容：{response.Content}");
+      });
+    }
+
+    private void SendGetRequest()
+    {
+      Task.Run(async () =>
+      {
+        var client = new RestClient("http://127.0.0.1:9000/");
+        var request = new RestRequest("api/home/echo?name=get");
+        var response = await client.GetAsync(request);
+        EventSignal.SendWriteDebugLogSignal($"获取GET请求响应：状态码：{response.StatusCode},内容：{response.Content}");
+      });
     }
 
     /// <summary>

@@ -26,7 +26,6 @@ namespace Wpf.MvvmLight.SelfHost
       UnregisterMessageSignal();
 
       StartWebApi();
-      //StartTaskScheduler().Wait();
     }
 
     /// <summary>

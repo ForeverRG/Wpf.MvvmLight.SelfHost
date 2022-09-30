@@ -1,4 +1,7 @@
-﻿using System.Web.Http;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Web.Http;
+using Wpf.MvvmLight.SelfHost.Api.Model;
 
 namespace Wpf.MvvmLight.SelfHost.Api.Controllers
 {
@@ -8,16 +11,19 @@ namespace Wpf.MvvmLight.SelfHost.Api.Controllers
   [RoutePrefix("api/home")]
   public class HomeController : ApiController
   {
-    /// <summary>
-    /// Print the greetings
-    /// </summary>
-    /// <param name="name">visitor</param>
-    /// <returns>greetings</returns>
     [Route("echo")]
     [HttpGet]
-    public IHttpActionResult Echo(string name)
+    public IHttpActionResult EchoGet(string name)
     {
-      return Json(new { Name = name, Message = $"Hello, {name}" });
+      return Json(new { Name = name, Message = $"Hello {name}" });
+    }
+
+    [Route("echo")]
+    [HttpPost]
+    public IHttpActionResult EchoPost([FromBody] PostEcho echo)
+    {
+
+      return Json(new { Name = echo.Name, Message = $"Hello {echo.Name}" });
     }
   }
 }
