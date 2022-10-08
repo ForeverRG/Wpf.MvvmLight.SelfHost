@@ -85,8 +85,6 @@
     <Compile Include="Coordinate.cs" />
     <Compile Include="Enum\JobAction.cs" />
     <Compile Include="Enum\NetType.cs" />
-    <Compile Include="GlobalVariable\PLCAddress.cs" />
-    <Compile Include="GlobalVariable\RobotReturn.cs" />
     <Compile Include="Enum\TestSequence.cs" />
     <Compile Include="Jig.cs" />
     <Compile Include="ModuleSettings.cs" />
@@ -102,7 +100,9 @@
     <Compile Include="Vision.cs" />
     <Compile Include="Enum\VisionAction.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="GlobalVariable\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
