@@ -54,7 +54,6 @@ namespace Wpf.MvvmLight.SelfHost.Api.Controllers
     /// </summary>
     /// <param name="tableNames">需要生成的表名</param>
     /// <returns></returns>
-    [Route("framefiles")]
     [HttpPost]
     public HttpMessage<string> GetFrameFilesByTableNames([FromBody] string[] tableNames)
     {
@@ -80,7 +79,6 @@ namespace Wpf.MvvmLight.SelfHost.Api.Controllers
     /// </summary>
     /// <param name="tableNames">需要生成的表名</param>
     /// <returns></returns>
-    [Route("models")]
     [HttpPost]
     public HttpMessage<string> GetFrameFilesByTableNamesForEntity([FromBody] string[] tableNames)
     {
@@ -102,7 +100,6 @@ namespace Wpf.MvvmLight.SelfHost.Api.Controllers
     /// </summary>
     /// <param name="tableNames">需要生成的表名</param>
     /// <returns></returns>
-    [Route("controllers")]
     [HttpPost]
     public HttpMessage<string> GetFrameFilesByTableNamesForController([FromBody] string[] tableNames)
     {
@@ -124,7 +121,6 @@ namespace Wpf.MvvmLight.SelfHost.Api.Controllers
     /// </summary>
     /// <param name="tableNames">需要生成的表名</param>
     /// <returns></returns>
-    [Route("allframefiles")]
     [HttpPost]
     public HttpMessage<string> GetAllFrameFilesByTableNames([FromBody] string[] tableNames)
     {

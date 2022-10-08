@@ -4,6 +4,7 @@ dotnet new -i Wpf.MvvmLight.SelfHost.Template
 
 set /p OP=Please set your project name(for example:Range.Demo):
 
+
 md .YourProject
 
 cd .YourProject
