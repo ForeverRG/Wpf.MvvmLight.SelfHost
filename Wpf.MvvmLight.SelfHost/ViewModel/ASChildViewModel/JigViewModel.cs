@@ -1,39 +1,38 @@
 using GalaSoft.MvvmLight;
 using Wpf.MvvmLight.SelfHost.Model;
-using Wpf.MvvmLight.SelfHost.Services;
 using Wpf.MvvmLight.SelfHost.EventBus;
 using Wpf.MvvmLight.SelfHost.Common.ASChildModel;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using static Wpf.MvvmLight.SelfHost.EventBus.MessageModel;
+using Wpf.MvvmLight.SelfHost.IServices;
 
 namespace Wpf.MvvmLight.SelfHost.ViewModel.ASChildViewModel
 {
   public class JigViewModel : ViewModelBase, IEventBus
   {
-    private JigServices jigServices;
-    private ConfigServices configServices;
+    private IJigServices _jigServices;
+    private IConfigServices _configServices;
 
-    private JigModel jigModel;
+    private JigModel _jigModel;
 
     public JigModel JigModel
     {
-      get { return jigModel; }
-      set { jigModel = value; RaisePropertyChanged(); }
+      get { return _jigModel; }
+      set { _jigModel = value; RaisePropertyChanged(); }
     }
 
-    public JigViewModel()
+    public JigViewModel(IJigServices jigServices, IConfigServices configServices)
     {
-      jigServices = new JigServices();
-      configServices = new ConfigServices();
+      _jigServices = jigServices;
+      _configServices = configServices;
       JigModel = new JigModel();
 
       RegisterMessageSignal();
-      // 初始化夹具集合
       EventSignal.SendShowProgressViewSignal(true);
       Task.Run(async () =>
       {
+        // 初始化夹具集合
         await InitJigModel();
         EventSignal.SendShowProgressViewSignal(false);
       });
@@ -74,11 +73,11 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel.ASChildViewModel
     /// <param name="msg"></param>
     private void SaveAdvancedSettingsSlot(string msg)
     {
-      var moduleTypeConfig = configServices.GetSettings(c => c.Key == "ModuleType").Result?.FirstOrDefault();
+      var moduleTypeConfig = _configServices.GetSettings(c => c.Key == "ModuleType").Result?.FirstOrDefault();
       var currentModuleType = moduleTypeConfig != null ? moduleTypeConfig.Value : string.Empty;
       var jigsSettings = JigModel.JigsSocket1.Concat(JigModel.JigsSocket2).Concat(JigModel.JigsQR);
       jigsSettings.ToList().ForEach(j => j.ModuleType = currentModuleType);
-      jigServices.SaveSettings(jigsSettings.ToList(), j => new { j.Id, j.ModuleType }).Wait();
+      _jigServices.SaveSettings(jigsSettings.ToList(), j => new { j.Id, j.ModuleType }).Wait();
       UpdateViewByModuleTypeSlot(null);
       MessengerInstance.Send("夹具配置保存成功!", "ShowMessageSignal");
     }
@@ -150,9 +149,9 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel.ASChildViewModel
          Type = "Socket2"
        }));
 
-      var moduleTypeConfig = configServices.GetSettings(c => c.Key == "ModuleType").Result?.FirstOrDefault();
+      var moduleTypeConfig = _configServices.GetSettings(c => c.Key == "ModuleType").Result?.FirstOrDefault();
       var currentModuleType = moduleTypeConfig != null ? moduleTypeConfig.Value : string.Empty;
-      var jigs = (await jigServices.GetSettings(j => j.ModuleType == currentModuleType)).ToList();
+      var jigs = (await _jigServices.GetSettings(j => j.ModuleType == currentModuleType)).ToList();
       JigModel.JigsQR = jigs.Count == 0 ? defaultJigsQR : new ObservableCollection<Jig>(jigs.FindAll(j => j.Type == "QR"));
       JigModel.JigsSocket1 = jigs.Count == 0 ? defaultJigsSocket1 : new ObservableCollection<Jig>(jigs.FindAll(j => j.Type == "Socket1"));
       JigModel.JigsSocket2 = jigs.Count == 0 ? defaultJigsSocket2 : new ObservableCollection<Jig>(jigs.FindAll(j => j.Type == "Socket2"));

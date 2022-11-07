@@ -14,6 +14,8 @@
 
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using Wpf.MvvmLight.SelfHost.IServices;
+using Wpf.MvvmLight.SelfHost.Services;
 using Wpf.MvvmLight.SelfHost.ViewModel.ASChildViewModel;
 
 namespace Wpf.MvvmLight.SelfHost.ViewModel
@@ -42,6 +44,36 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel
       //    SimpleIoc.Default.Register<IDataService, DataService>();
       //}
 
+      // 注入ViewModel
+      RegisterViewModel();
+      // 注入Services
+      RegisterServices();
+    }
+
+    /// <summary>
+    /// 注入Services
+    /// </summary>
+    private void RegisterServices()
+    {
+      SimpleIoc.Default.Register<IChannelServices, ChannelServices>();
+      SimpleIoc.Default.Register<IConfigServices, ConfigServices>();
+      SimpleIoc.Default.Register<IControlCenterService, ControlCenterService>();
+      SimpleIoc.Default.Register<IGripperLoadInfoServices, GripperLoadInfoServices>();
+      SimpleIoc.Default.Register<IJigServices, JigServices>();
+      SimpleIoc.Default.Register<IModuleSettingsServices, ModuleSettingsServices>();
+      SimpleIoc.Default.Register<IModuleTypeServices, ModuleTypeServices>();
+      SimpleIoc.Default.Register<IPLCServices, PLCServices>();
+      SimpleIoc.Default.Register<IRobotServices, RobotServices>();
+      SimpleIoc.Default.Register<ITestBenchServices, TestBenchServices>();
+      SimpleIoc.Default.Register<ITrayServices, TrayServices>();
+      SimpleIoc.Default.Register<IVisionServices, VisionServices>();
+    }
+
+    /// <summary>
+    /// 注入ViewModel
+    /// </summary>
+    private void RegisterViewModel()
+    {
       SimpleIoc.Default.Register<MainViewModel>();
       SimpleIoc.Default.Register<LayoutViewModel>();
       SimpleIoc.Default.Register<HomeViewModel>();

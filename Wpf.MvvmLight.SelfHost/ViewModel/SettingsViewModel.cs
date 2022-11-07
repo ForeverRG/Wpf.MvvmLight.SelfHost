@@ -2,7 +2,6 @@
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using Wpf.MvvmLight.SelfHost.Model;
-using Wpf.MvvmLight.SelfHost.Services;
 using Wpf.MvvmLight.SelfHost.EventBus;
 using Wpf.MvvmLight.SelfHost.Common;
 using System;
@@ -10,18 +9,19 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Wpf.MvvmLight.SelfHost.IServices;
 
 namespace Wpf.MvvmLight.SelfHost.ViewModel
 {
   public class SettingsViewModel : ViewModelBase
   {
-    private ControlCenterService controlCenterService;
-    private PLCServices plcServices;
-    private RobotServices robotServices;
-    private VisionServices visionServices;
-    private TestBenchServices testBenchServices;
-    private ConfigServices configServices;
-    private ModuleTypeServices moduleTypeServices;
+    private IControlCenterService _controlCenterService;
+    private IPLCServices _plcServices;
+    private IRobotServices _robotServices;
+    private IVisionServices _visionServices;
+    private ITestBenchServices _testBenchServices;
+    private IConfigServices _configServices;
+    private IModuleTypeServices _moduleTypeServices;
 
     private SettingsModel settings;
 
@@ -49,16 +49,23 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel
 
     public SettingsModel Settings { get => settings; set { settings = value; RaisePropertyChanged(); } }
 
-    public SettingsViewModel()
+    public SettingsViewModel(
+      IControlCenterService controlCenterService,
+      IPLCServices plcServices,
+      IRobotServices robotServices,
+      IVisionServices visionServices,
+      ITestBenchServices testBenchServices,
+      IConfigServices configServices,
+      IModuleTypeServices moduleTypeServices)
     {
-      controlCenterService = new ControlCenterService();
-      plcServices = new PLCServices();
-      robotServices = new RobotServices();
-      visionServices = new VisionServices();
-      testBenchServices = new TestBenchServices();
-      configServices = new ConfigServices();
+      _controlCenterService = controlCenterService;
+      _plcServices = plcServices;
+      _robotServices = robotServices;
+      _visionServices = visionServices;
+      _testBenchServices = testBenchServices;
+      _configServices = configServices;
+      _moduleTypeServices = moduleTypeServices;
       Settings = new SettingsModel();
-      moduleTypeServices = new ModuleTypeServices();
 
       SaveAllSettingsCommand = new RelayCommand(SaveAllSettings);
 
@@ -79,13 +86,13 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel
       try
       {
         // 保存总控、PLC、视觉、机器人网络设置
-        controlCenterService.SaveSettings(Settings.ControlCenter).Wait();
-        plcServices.SaveSettings(Settings.Plc).Wait();
-        visionServices.SaveSettings(Settings.Vision).Wait();
-        robotServices.SaveSettings(Settings.Robot).Wait();
+        _controlCenterService.SaveSettings(Settings.ControlCenter).Wait();
+        _plcServices.SaveSettings(Settings.Plc).Wait();
+        _visionServices.SaveSettings(Settings.Vision).Wait();
+        _robotServices.SaveSettings(Settings.Robot).Wait();
 
         // 保存运行参数设置
-        configServices.SaveSettings(new List<Config> {
+        _configServices.SaveSettings(new List<Config> {
           Settings.ModeConfig,
           Settings.RobotNameConfig,
           Settings.LineNameConfig,
@@ -98,7 +105,7 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel
         }).Wait();
 
         // 保存测试台设置
-        testBenchServices.SaveSettings(new List<TestBench>(Settings.TestBenches)).Wait();
+        _testBenchServices.SaveSettings(new List<TestBench>(Settings.TestBenches)).Wait();
 
         Messenger.Default.Send("保存成功!", "ShowMessageSignal");
         Messenger.Default.Send(string.Empty, "UpdateViewByModuleTypeSignal");
@@ -117,13 +124,13 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel
     private async Task InitSettingsModel()
     {
       // 初始化总控、PLC、视觉、机器人网络设置
-      Settings.ControlCenter = (await controlCenterService.GetSettings()) ?? new ControlCenter { Ip = controlCenterService.GetLocalIpAddress(), Port = 5000 };
-      Settings.Plc = (await plcServices.GetSettings()) ?? new PLC { Ip = "192.168.3.16", Port = 6000 };
-      Settings.Vision = (await visionServices.GetSettings()) ?? new VisionModel { Ip = "192.168.3.100", Port = 6000 };
-      Settings.Robot = (await robotServices.GetSettings()) ?? new Robot { Ip = "192.168.3.10", Port = 6000 };
+      Settings.ControlCenter = (await _controlCenterService.GetSettings()) ?? new ControlCenter { Ip = _controlCenterService.GetLocalIpAddress(), Port = 5000 };
+      Settings.Plc = (await _plcServices.GetSettings()) ?? new PLC { Ip = "192.168.3.16", Port = 6000 };
+      Settings.Vision = (await _visionServices.GetSettings()) ?? new VisionModel { Ip = "192.168.3.100", Port = 6000 };
+      Settings.Robot = (await _robotServices.GetSettings()) ?? new Robot { Ip = "192.168.3.10", Port = 6000 };
 
       //初始化运行参数设置
-      var configs = await configServices.GetSettings() as List<Config>;
+      var configs = await _configServices.GetSettings() as List<Config>;
       Settings.ModeConfig = configs.Find(c => c.Key == "RunMode") ?? new Config { Key = "RunMode", Value = string.Empty };
       Settings.RobotNameConfig = configs.Find(c => c.Key == "RobotName") ?? new Config { Key = "RobotName", Value = string.Empty };
       Settings.LineNameConfig = configs.Find(c => c.Key == "LineName") ?? new Config { Key = "LineName", Value = string.Empty };
@@ -146,11 +153,11 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel
               Sequence = string.Empty,
               Port = 0
             }));
-      var testBenches = new ObservableCollection<TestBench>(await testBenchServices.GetSettings());
+      var testBenches = new ObservableCollection<TestBench>(await _testBenchServices.GetSettings());
       Settings.TestBenches = testBenches.Count == 0 ? defaultTestBenches : testBenches;
 
       // 初始化其他所需数据
-      var moduleTypes = (await moduleTypeServices.GetSettings())?.Select(m => m.Name).ToList();
+      var moduleTypes = (await _moduleTypeServices.GetSettings())?.Select(m => m.Name).ToList();
 
       Settings.ModuleTypes = moduleTypes.Count > 0 ? moduleTypes : new List<string> { "Module-A", "Module-B" };
     }

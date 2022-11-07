@@ -2,15 +2,12 @@
 using GalaSoft.MvvmLight.Command;
 using Wpf.MvvmLight.SelfHost.EventBus;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using static Wpf.MvvmLight.SelfHost.EventBus.MessageModel;
 using Wpf.MvvmLight.SelfHost.Common;
 using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using RestSharp;
+using Wpf.MvvmLight.SelfHost.Common.HttpRequestHelper;
 
 namespace Wpf.MvvmLight.SelfHost.ViewModel
 {
@@ -40,26 +37,16 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel
       ClearDebugLogCommand = new RelayCommand(ClearDebugLog);
     }
 
-    private void SendPostRequest()
+    private async void SendPostRequest()
     {
-      Task.Run(async () =>
-      {
-        var client = new RestClient("http://127.0.0.1:9000/");
-        var request = new RestRequest("api/home/echo", Method.Post).AddParameter("name","post");
-        var response = await client.PostAsync(request);
-        EventSignal.SendWriteDebugLogSignal($"获取POST请求响应：状态码：{response.StatusCode},内容：{response.Content}");
-      });
+      var response = await new RangeRestApi().PostAsync("http://127.0.0.1:9000/api/v1/home/echo", new { name = "Range post" });
+      EventSignal.SendWriteDebugLogSignal($"获取POST请求响应：{response}");
     }
 
-    private void SendGetRequest()
+    private async void SendGetRequest()
     {
-      Task.Run(async () =>
-      {
-        var client = new RestClient("http://127.0.0.1:9000/");
-        var request = new RestRequest("api/home/echo?name=get");
-        var response = await client.GetAsync(request);
-        EventSignal.SendWriteDebugLogSignal($"获取GET请求响应：状态码：{response.StatusCode},内容：{response.Content}");
-      });
+      var response = await new RangeRestApi().GetAsync("http://127.0.0.1:9000/api/v1/home/echo", new { name = "Range get" });
+      EventSignal.SendWriteDebugLogSignal($"获取GET请求响应：{response}");
     }
 
     /// <summary>

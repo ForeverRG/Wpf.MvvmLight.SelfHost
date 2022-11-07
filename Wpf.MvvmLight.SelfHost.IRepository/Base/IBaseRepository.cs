@@ -168,5 +168,13 @@ namespace Wpf.MvvmLight.SelfHost.IRepository.Base
     /// <param name="listEntity"></param>
     /// <returns></returns>
     Task AddOrUpdate(List<TEntity> listEntity, Expression<Func<TEntity, object>> expression);
+
+    /// <summary>
+    /// 插入或更新
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <param name="expression"></param>
+    /// <returns></returns>
+    Task AddOrUpdate(TEntity entity, Expression<Func<TEntity, object>> expression);
   }
 }

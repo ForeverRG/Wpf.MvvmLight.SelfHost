@@ -14,15 +14,15 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel
 {
   public class LayoutViewModel : ViewModelBase
   {
-    private LayoutModel layout;
-    private Dictionary<Type, object> cachViews; // 视图缓存
+    private LayoutModel _layout;
+    private Dictionary<Type, object> _cachViews; // 视图缓存
 
     public RelayCommand<MenuBar> ShowViewCommand { get; set; }
     public RelayCommand ShowDrawerCommand { get; set; }
     public RelayCommand DrawerBackOrForwardCommand { get; set; }
     public RelayCommand ConfigureVisionCommand { get; set; }
-    public LayoutModel Layout { get => layout; set { layout = value; RaisePropertyChanged(); } }
-    public Dictionary<Type, object> CachViews { get => cachViews; set { cachViews = value; RaisePropertyChanged(); } }
+    public LayoutModel Layout { get => _layout; set { _layout = value; RaisePropertyChanged(); } }
+    public Dictionary<Type, object> CachViews { get => _cachViews; set { _cachViews = value; RaisePropertyChanged(); } }
 
     public LayoutViewModel()
     {

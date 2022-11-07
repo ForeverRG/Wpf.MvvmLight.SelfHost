@@ -1,23 +1,23 @@
 ﻿using GalaSoft.MvvmLight;
 using Wpf.MvvmLight.SelfHost.Model;
-using Wpf.MvvmLight.SelfHost.Services;
 using Wpf.MvvmLight.SelfHost.EventBus;
 using Wpf.MvvmLight.SelfHost.Common.ASChildModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Wpf.MvvmLight.SelfHost.IServices;
 
 namespace Wpf.MvvmLight.SelfHost.ViewModel.ASChildViewModel
 {
   public class TrayViewModel : ViewModelBase, IEventBus
   {
-    private TrayServices trayServices;
+    private ITrayServices _trayServices;
     private TrayModel trayModel;
     public TrayModel TrayModel { get => trayModel; set { trayModel = value; RaisePropertyChanged(); } }
 
-    public TrayViewModel()
+    public TrayViewModel(ITrayServices trayServices)
     {
-      trayServices = new TrayServices();
+      _trayServices = trayServices;
       TrayModel = new TrayModel();
 
       RegisterMessageSignal();
@@ -34,7 +34,7 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel.ASChildViewModel
     /// </summary>
     private async Task InitTrayModel()
     {
-      var trays = (await trayServices.GetSettings()).ToList();
+      var trays = (await _trayServices.GetSettings()).ToList();
       if (trays.Count == 0)
       {
         TrayModel.GoldTray = new Tray { Columns = 0, Rows = 0, X = 0, Y = 0, Z = 0, SpacingX = 0, SpacingY = 0, RZ = 0, Type = "Gold" };
@@ -62,7 +62,7 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel.ASChildViewModel
 
     private void SaveAdvancedSettingsSlot(string obj)
     {
-      trayServices.SaveSettings(new List<Tray> { TrayModel.GoldTray, TrayModel.NgTrayLeft, TrayModel.NgTrayRight, TrayModel.LeftTestTray, TrayModel.RightTestTray, TrayModel.TrayLeftAndRightSpacing }).Wait();
+      _trayServices.SaveSettings(new List<Tray> { TrayModel.GoldTray, TrayModel.NgTrayLeft, TrayModel.NgTrayRight, TrayModel.LeftTestTray, TrayModel.RightTestTray, TrayModel.TrayLeftAndRightSpacing }).Wait();
       UpdateTrayView();
       MessengerInstance.Send("Tray盘配置保存成功!", "ShowMessageSignal");
       MessengerInstance.Send(string.Empty, "UpdateTraySettingsSignal");

@@ -20,5 +20,14 @@ namespace Wpf.MvvmLight.SelfHost.IServices
     /// <param name="expression"></param>
     /// <returns></returns>
     Task<IList<GripperLoadInfo>> GetSettings(Expression<Func<GripperLoadInfo, bool>> expression);
+
+    /// <summary>
+    /// 保存配置
+    /// </summary>
+    /// <param name="gripperLoadInfos"></param>
+    /// <param name="expression"></param>
+    /// <returns></returns>
+
+    Task SaveSettings(List<GripperLoadInfo> gripperLoadInfos, Expression<Func<GripperLoadInfo, object>> expression);
   }
 }

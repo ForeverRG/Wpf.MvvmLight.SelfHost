@@ -15,7 +15,7 @@ namespace Wpf.MvvmLight.SelfHost.Services
     /// <returns></returns>
     public string GetLocalIpAddress()
     {
-      return IPAddressUtils.GetLocalIpAddress(NetType.InterNetwork.ToString()).FirstOrDefault();
+      return NetworkUtils.GetLocalIpAddress(NetType.InterNetwork.ToString()).FirstOrDefault();
     }
 
     /// <summary>

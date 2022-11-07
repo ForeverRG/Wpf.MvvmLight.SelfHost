@@ -1,29 +1,32 @@
 using GalaSoft.MvvmLight;
 using Wpf.MvvmLight.SelfHost.Model;
-using Wpf.MvvmLight.SelfHost.Services;
 using Wpf.MvvmLight.SelfHost.EventBus;
 using Wpf.MvvmLight.SelfHost.Common.ASChildModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Wpf.MvvmLight.SelfHost.IServices;
 
 namespace Wpf.MvvmLight.SelfHost.ViewModel.ASChildViewModel
 {
   public class ModuleSettingsViewModel : ViewModelBase, IEventBus
   {
-    private ModuleSettingsServices moduleSettingsServices;
-    private JigServices jigServices;
-    private ModuleSettingsModel moduleSettingsModel;
-    private ModuleTypeServices moduleTypeServices;
+    private IModuleSettingsServices _moduleSettingsServices;
+    private IJigServices _jigServices;
+    private IModuleTypeServices _moduleTypeServices;
+    private ModuleSettingsModel _moduleSettingsModel;
 
-    public ModuleSettingsModel ModuleSettingsModel { get => moduleSettingsModel; set { moduleSettingsModel = value; RaisePropertyChanged(); } }
+    public ModuleSettingsModel ModuleSettingsModel { get => _moduleSettingsModel; set { _moduleSettingsModel = value; RaisePropertyChanged(); } }
 
-    public ModuleSettingsViewModel()
+    public ModuleSettingsViewModel(
+      IModuleSettingsServices moduleSettingsServices,
+      IJigServices jigServices,
+      IModuleTypeServices moduleTypeServices)
     {
-      moduleTypeServices = new ModuleTypeServices();
-      moduleSettingsServices = new ModuleSettingsServices();
-      jigServices = new JigServices();
+      _moduleTypeServices = moduleTypeServices;
+      _moduleSettingsServices = moduleSettingsServices;
+      _jigServices = jigServices;
       ModuleSettingsModel = new ModuleSettingsModel();
 
       RegisterMessageSignal();
@@ -41,7 +44,7 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel.ASChildViewModel
     /// </summary>
     private async Task InitModuleSettingsModel()
     {
-      ModuleSettingsModel.ModuleTypes = (await moduleTypeServices.GetSettings())?.Select(m => m.Name).ToList(); ;
+      ModuleSettingsModel.ModuleTypes = (await _moduleTypeServices.GetSettings())?.Select(m => m.Name).ToList(); ;
       ModuleSettingsModel.Sides = new List<string> { "Socket1", "Socket2", "DoubleSocket" };
 
       var defaultModuleSettings = new ObservableCollection<ModuleSettings>(
@@ -54,7 +57,7 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel.ASChildViewModel
             Side = "Socket1"
           })
         );
-      var moduleSettings = new ObservableCollection<ModuleSettings>(await moduleSettingsServices.GetSettings());
+      var moduleSettings = new ObservableCollection<ModuleSettings>(await _moduleSettingsServices.GetSettings());
       ModuleSettingsModel.ModuleSettings = moduleSettings.Count == 0 ? defaultModuleSettings : moduleSettings;
     }
 
@@ -65,10 +68,10 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel.ASChildViewModel
 
     private void SaveAdvancedSettingsSlot(string obj)
     {
-      moduleSettingsServices.SaveSettings(new List<ModuleSettings>(ModuleSettingsModel.ModuleSettings)).Wait();
+      _moduleSettingsServices.SaveSettings(new List<ModuleSettings>(ModuleSettingsModel.ModuleSettings)).Wait();
       foreach (var moduleSetting in ModuleSettingsModel.ModuleSettings)
       {
-        jigServices.UpdateJigField(j => new Jig { QR = moduleSetting.QR }, j => j.Number == moduleSetting.JigNumber);
+        _jigServices.UpdateJigField(j => new Jig { QR = moduleSetting.QR }, j => j.Number == moduleSetting.JigNumber);
       }
       UpdateModuleSettingsView();
       MessengerInstance.Send("机型配置保存成功!", "ShowMessageSignal");

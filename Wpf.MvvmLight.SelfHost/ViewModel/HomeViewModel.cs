@@ -14,13 +14,12 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel
 {
   public class HomeViewModel : ViewModelBase, IEventBus
   {
-    private StartEngine startEngine;
-
+    private StartEngine _startEngine;
     public ControlCenterHelper controlCenterHelper;
     public RobotHelper robotHelper;
 
-    private HomeModel home;
-    public HomeModel Home { get => home; set { home = value; RaisePropertyChanged(); } }
+    private HomeModel _home;
+    public HomeModel Home { get => _home; set { _home = value; RaisePropertyChanged(); } }
     public RelayCommand StartCommand { get; set; }
     public RelayCommand StopCommand { get; set; }
     public RelayCommand SuspendOrContinueCommand { get; set; }
@@ -42,7 +41,7 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel
       ClearUILogCommand = new RelayCommand(ClearUILog);
 
       controlCenterHelper = new ControlCenterHelper();
-      startEngine = new StartEngine(controlCenterHelper);
+      _startEngine = new StartEngine(controlCenterHelper);
     }
 
     /// <summary>
@@ -85,7 +84,7 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel
     private async Task StartRunTask()
     {
       EventSignal.SendWriteLogSignal("开始运行任务");
-      await startEngine.StartRunTask();
+      await _startEngine.StartRunTask();
     }
 
     /// <summary>

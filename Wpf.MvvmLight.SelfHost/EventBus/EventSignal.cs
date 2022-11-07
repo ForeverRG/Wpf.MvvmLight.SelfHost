@@ -3,7 +3,7 @@ using GalaSoft.MvvmLight.Threading;
 using Wpf.MvvmLight.SelfHost.Common.Enum;
 using Wpf.MvvmLight.SelfHost.Common.Model;
 using System.Windows;
-using static Wpf.MvvmLight.SelfHost.EventBus.MessageModel;
+using Wpf.MvvmLight.SelfHost.EventBus.EventMessageModel;
 
 namespace Wpf.MvvmLight.SelfHost.EventBus
 {

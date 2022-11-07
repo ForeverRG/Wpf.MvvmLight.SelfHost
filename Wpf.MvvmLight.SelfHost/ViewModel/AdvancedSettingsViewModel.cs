@@ -1,6 +1,5 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using Wpf.MvvmLight.SelfHost.Services;
 using Wpf.MvvmLight.SelfHost.Common;
 using Wpf.MvvmLight.SelfHost.Common.Model;
 using Wpf.MvvmLight.SelfHost.EventBus;
@@ -9,22 +8,23 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Wpf.MvvmLight.SelfHost.IServices;
 
 namespace Wpf.MvvmLight.SelfHost.ViewModel
 {
   public class AdvancedSettingsViewModel : ViewModelBase, IEventBus
   {
-    private ConfigServices configServices;
-    private AdvancedSettingsModel advancedSettings;
-    private Dictionary<Type, object> cachViews; // 视图缓存
-    public AdvancedSettingsModel AdvancedSettings { get => advancedSettings; set { advancedSettings = value; RaisePropertyChanged(); } }
-    public Dictionary<Type, object> CachViews { get => cachViews; set { cachViews = value; RaisePropertyChanged(); } }
+    private IConfigServices _configServices;
+    private AdvancedSettingsModel _advancedSettings;
+    private Dictionary<Type, object> _cachViews; // 视图缓存
+    public AdvancedSettingsModel AdvancedSettings { get => _advancedSettings; set { _advancedSettings = value; RaisePropertyChanged(); } }
+    public Dictionary<Type, object> CachViews { get => _cachViews; set { _cachViews = value; RaisePropertyChanged(); } }
     public RelayCommand<MenuBar> ShowViewCommand { get; private set; }
     public RelayCommand SaveAllAdvancedSettingsCommand { get; private set; }
 
-    public AdvancedSettingsViewModel()
+    public AdvancedSettingsViewModel(IConfigServices configServices)
     {
-      configServices = new ConfigServices();
+      _configServices = configServices;
       ShowViewCommand = new RelayCommand<MenuBar>(ShowView);
       SaveAllAdvancedSettingsCommand = new RelayCommand(SaveAllAdvancedSettings);
 
@@ -105,7 +105,7 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel
     /// </summary>
     private void UpdateHeaderInfo()
     {
-      var moduleTypeConfig = configServices.GetSettings(c => c.Key == "ModuleType").Result?.FirstOrDefault();
+      var moduleTypeConfig = _configServices.GetSettings(c => c.Key == "ModuleType").Result?.FirstOrDefault();
       AdvancedSettings.CurrentModuleType = moduleTypeConfig != null ? moduleTypeConfig.Value : string.Empty;
     }
 

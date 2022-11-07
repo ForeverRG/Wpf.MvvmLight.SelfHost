@@ -1,28 +1,27 @@
 using GalaSoft.MvvmLight;
 using Wpf.MvvmLight.SelfHost.Model;
-using Wpf.MvvmLight.SelfHost.Services;
 using Wpf.MvvmLight.SelfHost.EventBus;
 using Wpf.MvvmLight.SelfHost.Common.ASChildModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
+using Wpf.MvvmLight.SelfHost.IServices;
 
 namespace Wpf.MvvmLight.SelfHost.ViewModel.ASChildViewModel
 {
   public class GripperLoadViewModel : ViewModelBase, IEventBus
   {
-    private GripperLoadInfoServices gripperLoadInfoServices;
-    private ConfigServices configServices;
-    private GripperLoadModel gripperLoadModel;
+    private IGripperLoadInfoServices _gripperLoadInfoServices;
+    private IConfigServices _configServices;
+    private GripperLoadModel _gripperLoadModel;
 
-    public GripperLoadModel GripperLoadModel { get => gripperLoadModel; set { gripperLoadModel = value; RaisePropertyChanged(); } }
+    public GripperLoadModel GripperLoadModel { get => _gripperLoadModel; set { _gripperLoadModel = value; RaisePropertyChanged(); } }
 
-    public GripperLoadViewModel()
+    public GripperLoadViewModel(IGripperLoadInfoServices gripperLoadInfoServices, IConfigServices configServices)
     {
-      gripperLoadInfoServices = new GripperLoadInfoServices();
-      configServices = new ConfigServices();
+      _gripperLoadInfoServices = gripperLoadInfoServices;
+      _configServices = configServices;
       GripperLoadModel = new GripperLoadModel();
 
       RegisterMessageSignal();
@@ -40,7 +39,7 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel.ASChildViewModel
     /// </summary>
     private async Task InitGripperLoadModel()
     {
-      var moduleTypeConfig = configServices.GetSettings(c => c.Key == "ModuleType").Result?.FirstOrDefault();
+      var moduleTypeConfig = _configServices.GetSettings(c => c.Key == "ModuleType").Result?.FirstOrDefault();
       var currentModuleType = moduleTypeConfig != null ? moduleTypeConfig.Value : string.Empty;
       var defaultGripperLoadList = new ObservableCollection<GripperLoadInfo>(
         Enumerable.Range(1, 4).Select(
@@ -54,7 +53,7 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel.ASChildViewModel
             ModuleType = currentModuleType,
           })
         );
-      var gripperLoadList = new ObservableCollection<GripperLoadInfo>(await gripperLoadInfoServices.GetSettings(g => g.ModuleType == currentModuleType));
+      var gripperLoadList = new ObservableCollection<GripperLoadInfo>(await _gripperLoadInfoServices.GetSettings(g => g.ModuleType == currentModuleType));
       GripperLoadModel.GripperLoadList = gripperLoadList.Count == 0 ? defaultGripperLoadList : gripperLoadList;
     }
 
@@ -75,7 +74,7 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel.ASChildViewModel
     private void SaveAdvancedSettingsSlot(string obj)
     {
       var gripperLoadList = new List<GripperLoadInfo>(GripperLoadModel.GripperLoadList);
-      gripperLoadInfoServices.SaveSettings(gripperLoadList, g => new { g.Id, g.GripperNumber, g.ModuleType }).Wait();
+      _gripperLoadInfoServices.SaveSettings(gripperLoadList, g => new { g.Id, g.GripperNumber, g.ModuleType }).Wait();
       UpdateViewByModuleTypeSlot(null);
       MessengerInstance.Send("抓手负载定位信息保存成功!", "ShowMessageSignal");
     }

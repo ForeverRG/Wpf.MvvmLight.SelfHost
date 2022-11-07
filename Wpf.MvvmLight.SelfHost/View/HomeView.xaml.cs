@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
-using static Wpf.MvvmLight.SelfHost.EventBus.MessageModel;
+using Wpf.MvvmLight.SelfHost.EventBus.EventMessageModel;
 
 namespace Wpf.MvvmLight.SelfHost.View
 {

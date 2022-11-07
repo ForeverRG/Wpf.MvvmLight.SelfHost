@@ -34,6 +34,12 @@ namespace Wpf.MvvmLight.SelfHost.Repository.Base
       await executor.AsUpdateable.ExecuteCommandAsync();
     }
 
+    public async Task AddOrUpdate(TEntity entity, Expression<Func<TEntity, object>> expression)
+    {
+      var executor = Context.Storageable(entity).WhereColumns(expression).ToStorage();
+      await executor.AsInsertable.ExecuteCommandAsync();
+      await executor.AsUpdateable.ExecuteCommandAsync();
+    }
     public async new Task<bool> Delete(TEntity model)
     {
       return await Context.Deleteable<TEntity>().Where(model).ExecuteCommandHasChangeAsync();

@@ -5,7 +5,7 @@ using System.Web.Http;
 
 namespace Wpf.MvvmLight.SelfHost.Api.Controllers
 {
-  [Route("api/[controller]/[action]")]
+  [RoutePrefix("api/dbfirst")]
   public class DbFirstController : ApiController
   {
     private readonly SqlSugarScope _sqlSugarClient;
@@ -26,7 +26,7 @@ namespace Wpf.MvvmLight.SelfHost.Api.Controllers
     /// 获取 整体框架 文件(主库)(一般可用第一次生成)
     /// </summary>
     /// <returns></returns>
-    [Route("api/[controller]/allframefiles")]
+    [Route("allframefiles")]
     [HttpGet]
     public HttpMessage<string> GetFrameFiles()
     {
@@ -50,16 +50,46 @@ namespace Wpf.MvvmLight.SelfHost.Api.Controllers
     }
 
     /// <summary>
+    /// DbFrist 根据数据库表名 生成整体框架,包含Model层(一般可用第一次生成)
+    /// </summary>
+    /// <param name="tableNames">需要生成的表名</param>
+    /// <returns></returns>
+    [Route("allframefiles")]
+    [HttpPost]
+    public HttpMessage<string> GetAllFrameFilesByTableNames([FromBody] string[] tableNames)
+    {
+      var data = new HttpMessage<string>() { Success = true, Msg = "" };
+      if (_isDevEnv)
+      {
+        data.Response += @"file path is:C:\my-file\ || ";
+        data.Response += $"Controller层生成：{FrameSeed.CreateControllers(_sqlSugarClient, _connID, false, tableNames)} || ";
+        data.Response += $"Model层生成：{FrameSeed.CreateModels(_sqlSugarClient, _connID, false, tableNames)} || ";
+        data.Response += $"IRepositorys层生成：{FrameSeed.CreateIRepositorys(_sqlSugarClient, _connID, false, tableNames)} || ";
+        data.Response += $"IServices层生成：{FrameSeed.CreateIServices(_sqlSugarClient, _connID, false, tableNames)} || ";
+        data.Response += $"Repository层生成：{FrameSeed.CreateRepository(_sqlSugarClient, _connID, false, tableNames)} || ";
+        data.Response += $"Services层生成：{FrameSeed.CreateServices(_sqlSugarClient, _connID, false, tableNames)} || ";
+      }
+      else
+      {
+        data.Success = false;
+        data.Msg = "当前不处于开发模式，代码生成不可用！";
+      }
+      return data;
+    }
+
+    /// <summary>
     /// 获取仓储层和服务层(需指定表名和数据库)
     /// </summary>
     /// <param name="tableNames">需要生成的表名</param>
     /// <returns></returns>
+    [Route("rsfiles")]
     [HttpPost]
     public HttpMessage<string> GetFrameFilesByTableNames([FromBody] string[] tableNames)
     {
       var data = new HttpMessage<string>() { Success = true, Msg = "" };
       if (_isDevEnv)
       {
+        data.Response += @"file path is:C:\my-file\ || ";
         data.Response += $"IRepositorys层生成：{FrameSeed.CreateIRepositorys(_sqlSugarClient, _connID, false, tableNames)} || ";
         data.Response += $"IServices层生成：{FrameSeed.CreateIServices(_sqlSugarClient, _connID, false, tableNames)} || ";
         data.Response += $"Repository层生成：{FrameSeed.CreateRepository(_sqlSugarClient, _connID, false, tableNames)} || ";
@@ -79,12 +109,14 @@ namespace Wpf.MvvmLight.SelfHost.Api.Controllers
     /// </summary>
     /// <param name="tableNames">需要生成的表名</param>
     /// <returns></returns>
+    [Route("entityfiles")]
     [HttpPost]
     public HttpMessage<string> GetFrameFilesByTableNamesForEntity([FromBody] string[] tableNames)
     {
       var data = new HttpMessage<string>() { Success = true, Msg = "" };
       if (_isDevEnv)
       {
+        data.Response += @"file path is:C:\my-file\ || ";
         data.Response += $"Models层生成：{FrameSeed.CreateModels(_sqlSugarClient, _connID, false, tableNames)}";
       }
       else
@@ -100,12 +132,15 @@ namespace Wpf.MvvmLight.SelfHost.Api.Controllers
     /// </summary>
     /// <param name="tableNames">需要生成的表名</param>
     /// <returns></returns>
+    [Route("controllerfiles")]
+    //[ActionName("controllerfiles")]
     [HttpPost]
     public HttpMessage<string> GetFrameFilesByTableNamesForController([FromBody] string[] tableNames)
     {
       var data = new HttpMessage<string>() { Success = true, Msg = "" };
       if (_isDevEnv)
       {
+        data.Response += @"file path is:C:\my-file\ || ";
         data.Response += $"Controllers层生成：{FrameSeed.CreateControllers(_sqlSugarClient, _connID, false, tableNames)}";
       }
       else
@@ -117,29 +152,14 @@ namespace Wpf.MvvmLight.SelfHost.Api.Controllers
     }
 
     /// <summary>
-    /// DbFrist 根据数据库表名 生成整体框架,包含Model层(一般可用第一次生成)
+    /// 释放资源
     /// </summary>
-    /// <param name="tableNames">需要生成的表名</param>
-    /// <returns></returns>
-    [HttpPost]
-    public HttpMessage<string> GetAllFrameFilesByTableNames([FromBody] string[] tableNames)
+    /// <param name="disposing"></param>
+    [NonAction]
+    protected override void Dispose(bool disposing)
     {
-      var data = new HttpMessage<string>() { Success = true, Msg = "" };
-      if (_isDevEnv)
-      {
-        data.Response += $"Controller层生成：{FrameSeed.CreateControllers(_sqlSugarClient, _connID, false, tableNames)} || ";
-        data.Response += $"Model层生成：{FrameSeed.CreateModels(_sqlSugarClient, _connID, false, tableNames)} || ";
-        data.Response += $"IRepositorys层生成：{FrameSeed.CreateIRepositorys(_sqlSugarClient, _connID, false, tableNames)} || ";
-        data.Response += $"IServices层生成：{FrameSeed.CreateIServices(_sqlSugarClient, _connID, false, tableNames)} || ";
-        data.Response += $"Repository层生成：{FrameSeed.CreateRepository(_sqlSugarClient, _connID, false, tableNames)} || ";
-        data.Response += $"Services层生成：{FrameSeed.CreateServices(_sqlSugarClient, _connID, false, tableNames)} || ";
-      }
-      else
-      {
-        data.Success = false;
-        data.Msg = "当前不处于开发模式，代码生成不可用！";
-      }
-      return data;
+      _sqlSugarClient.Dispose();
+      base.Dispose(disposing);
     }
   }
 }

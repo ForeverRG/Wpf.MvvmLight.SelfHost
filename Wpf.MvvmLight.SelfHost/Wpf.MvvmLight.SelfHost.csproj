@@ -132,9 +132,6 @@
     <Reference Include="NLog.Targets.Seq, Version=1.0.0.0, Culture=neutral, PublicKeyToken=aec39280ded1b3a7, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.Targets.Seq.1.2.0\lib\net45\NLog.Targets.Seq.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=108.0.2.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.108.0.2\lib\netstandard2.0\RestSharp.dll</HintPath>
-    </Reference>
     <Reference Include="ShowMeTheXAML, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ShowMeTheXAML.1.0.12\lib\net45\ShowMeTheXAML.dll</HintPath>
     </Reference>
@@ -172,8 +169,8 @@
     <Reference Include="System.Data.SQLite.Linq, Version=1.0.116.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.116.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.0.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.3.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Globalization" />
@@ -181,10 +178,8 @@
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http, Version=4.1.0.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Net.Http.4.1.3\lib\net46\System.Net.Http.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
+    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -211,15 +206,12 @@
     <Reference Include="System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encodings.Web.5.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
-    <Reference Include="System.Text.Json, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Json.5.0.0\lib\net461\System.Text.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -254,9 +246,12 @@
     <Compile Include="Common\Services\HandleRunTaskServices.cs" />
     <Compile Include="Common\Services\HandleRunTaskServicesDispatcher.cs" />
     <Compile Include="Common\Services\RunTaskEnqueueManager.cs" />
+    <Compile Include="EventBus\EventMessageModel\JigSocketOffset.cs" />
+    <Compile Include="EventBus\EventMessageModel\JigSocketQR.cs" />
+    <Compile Include="EventBus\EventMessageModel\MessageBoxTunnel.cs" />
+    <Compile Include="EventBus\EventMessageModel\PositioningSocket.cs" />
     <Compile Include="EventBus\EventSignal.cs" />
     <Compile Include="EventBus\IEventBus.cs" />
-    <Compile Include="EventBus\MessageModel.cs" />
     <Compile Include="Model\AdvancedSettingsModel.cs" />
     <Compile Include="Model\ASChildModel\JigModel.cs" />
     <Compile Include="Model\ASChildModel\ChannelMappingModel.cs" />
@@ -456,6 +451,10 @@
     <ProjectReference Include="..\Wpf.MvvmLight.SelfHost.Common\Wpf.MvvmLight.SelfHost.Common.csproj">
       <Project>{2419e474-4759-497d-88fa-34c1a461dc24}</Project>
       <Name>Wpf.MvvmLight.SelfHost.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wpf.MvvmLight.SelfHost.IServices\Wpf.MvvmLight.SelfHost.IServices.csproj">
+      <Project>{4277AFA7-7B3A-4CF4-B278-29E7EEC041FB}</Project>
+      <Name>Wpf.MvvmLight.SelfHost.IServices</Name>
     </ProjectReference>
     <ProjectReference Include="..\Wpf.MvvmLight.SelfHost.Model\Wpf.MvvmLight.SelfHost.Model.csproj">
       <Project>{29d23933-5a58-4658-861e-bb357b32ed25}</Project>
