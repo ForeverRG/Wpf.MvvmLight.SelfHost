@@ -17,9 +17,12 @@ namespace Wpf.MvvmLight.SelfHost
     /// </summary>
     public async Task StartRunTask()
     {
+      // 方式二：通过定时器定时处理任务
+      controlCenterHelper.ControlCenterRunningInstance.Timer1 = controlCenterHelper.CreateTimer1Task();
+      controlCenterHelper.ControlCenterRunningInstance.Timer2 = controlCenterHelper.CreateTimer2Task();
       // 重置取消处理者任务信号量
       controlCenterHelper.StartRunTasksDequeueTask();
-      // 定时从队列中获取任务
+      // 方式一：定时从队列中获取任务
       await controlCenterHelper.CreateHandlerTask();
     }
   }

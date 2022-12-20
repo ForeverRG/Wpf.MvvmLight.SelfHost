@@ -96,12 +96,14 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel
       {
         Home.SCBtnContent = "继续";
         manualReset.Reset();
+        controlCenterHelper.SuspendRunTasksDequeueTask();
         EventSignal.SendWriteLogSignal("总控暂停运行", LogLevel.Warn);
       }
       else
       {
         Home.SCBtnContent = "暂停";
         manualReset.Set();
+        controlCenterHelper.ContinueRunTasksDequeueTask();
         EventSignal.SendWriteLogSignal("总控继续运行", LogLevel.Warn);
       }
     }
@@ -111,11 +113,14 @@ namespace Wpf.MvvmLight.SelfHost.ViewModel
     /// </summary>
     private void Stop()
     {
-      controlCenterHelper.StopRunTasksDequeueTask(); // 停止定时任务
-      controlCenterHelper.InitControlCenterRunningInstance(); // 初始化总控运行实例
+      controlCenterHelper?.StopRunTasksDequeueTask(); // 停止定时任务
+      controlCenterHelper?.DisposeRunningTask(RunTimer.All); // 停止定时任务
+      controlCenterHelper?.InitControlCenterRunningInstance(); // 初始化总控运行实例
       Home.ControlCenterServer?.Stop();
       Home.IsEnableStartBtn = true;
       Home.IsEnableStopBtn = Home.IsEnableSuspendOrContinueBtn = false;
+      Home.SCBtnContent = "暂停";
+      controlCenterHelper.ContinueRunTasksDequeueTask();
       EventSignal.SendWriteAllLogSignal("总控相关服务已停止运行", LogLevel.Warn);
     }
 
