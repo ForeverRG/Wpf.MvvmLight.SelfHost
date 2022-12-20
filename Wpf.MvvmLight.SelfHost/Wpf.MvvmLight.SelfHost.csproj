@@ -239,6 +239,7 @@
     </ApplicationDefinition>
     <Compile Include="Common\Enum\LogLevel.cs" />
     <Compile Include="Common\Enum\LogType.cs" />
+    <Compile Include="Common\Enum\RunTimer.cs" />
     <Compile Include="Common\Helpers\ControlCenterHelper.cs" />
     <Compile Include="Common\Helpers\RobotHelper.cs" />
     <Compile Include="Common\Helpers\TestBenchHelper.cs" />
